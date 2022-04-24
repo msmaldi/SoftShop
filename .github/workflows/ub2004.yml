@@ -1,0 +1,38 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout Master
+        uses: actions/checkout@master
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+              
+      - name: Install Chromium Browser and Driver
+        run: sudo apt-get install -y chromium-browser chromium-chromedriver
+
+      - name: Setup HTTPS certs for Chrome
+        run: |
+          sudo apt-get install -y libnss3-tools
+          mkdir -p $HOME/snap/chromium/current/.pki/nssdb
+          dotnet dev-certs https
+          sudo -E dotnet dev-certs https -ep /usr/local/share/ca-certificates/aspnet/https.crt --format PEM
+          certutil -d sql:$HOME/snap/chromium/current/.pki/nssdb -A -t "P,," -n localhost -i /usr/local/share/ca-certificates/aspnet/https.crt
+          certutil -d sql:$HOME/snap/chromium/current/.pki/nssdb -A -t "C,," -n localhost -i /usr/local/share/ca-certificates/aspnet/https.crt
+      
+      - name: Build
+        run: dotnet build
+
+      - name: Test
+        run: dotnet test
+  
