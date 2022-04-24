@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-lastest
 
   steps:
-  - uses: actions/checkout@main
+  - uses: actions/checkout@master
 
   - name: Apt Update
     run: sudo apt-get update
