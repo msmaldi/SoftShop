@@ -23,9 +23,10 @@ jobs:
           sudo touch /etc/apt/sources.list.d/bionic-updates.list
           echo -e 'deb http://archive.ubuntu.com/ubuntu/ bionic-updates universe' | sudo tee /etc/apt/sources.list.d/bionic-updates.list
           sudo touch /etc/apt/preferences.d/chromium-deb-bionic-updates
-          echo -e 'Package: chromium-browser chromium-browser-l10n chromium-codecs-ffmpeg-extra chromium-codecs-ffmpeg' | sudo tee -a /etc/apt/preferences.d/chromium-deb-bionic-updates
+          echo -e 'Package: Package: chromium-browser chromium-browser-l10n chromium-chromedriver chromium-codecs-ffmpeg-extra chromium-codecs-ffmpeg' | sudo tee -a /etc/apt/preferences.d/chromium-deb-bionic-updates
           echo -e 'Pin: release a=bionic-updates' | sudo tee -a /etc/apt/preferences.d/chromium-deb-bionic-updates
           echo -e 'Pin-Priority: 900' | sudo tee -a /etc/apt/preferences.d/chromium-deb-bionic-updates
+          echo -e '' | sudo tee -a /etc/apt/preferences.d/chromium-deb-bionic-updates
           sudo apt-get update
               
       - name: Install Chromium Browser and Driver
