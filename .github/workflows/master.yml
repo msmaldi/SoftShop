@@ -9,32 +9,32 @@ jobs:
   build-and-test:
     runs-on: ubuntu-lastest
 
-  steps:
-    - name: Checkout Master
-    - uses: actions/checkout@master
+    steps:
+      - name: Checkout Master
+      - uses: actions/checkout@master
 
-    - name: Apt Update
-      run: sudo apt-get update
+      - name: Apt Update
+        run: sudo apt-get update
 
-    - name: Set up .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '6.0.x'
-    
-    - name: Install Chromium Browser and Driver
-      run: sudo apt-get install -y chromium-browser chromium-chromedriver
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+      
+      - name: Install Chromium Browser and Driver
+        run: sudo apt-get install -y chromium-browser chromium-chromedriver
 
-    - name: Setup HTTPS certs for Chrome
-      run: |
-        mkdir -p $HOME/.pki/nssdb
-        dotnet dev-certs https
-        sudo -E dotnet dev-certs https -ep /usr/local/share/ca-certificates/aspnet/https.crt --format PEM
-        certutil -d sql:$HOME/.pki/nssdb -A -t "P,," -n localhost -i /usr/local/share/ca-certificates/aspnet/https.crt
-        certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n localhost -i /usr/local/share/ca-certificates/aspnet/https.crt
-    
-    - name: Build
-      run: dotnet build
+      - name: Setup HTTPS certs for Chrome
+        run: |
+          mkdir -p $HOME/.pki/nssdb
+          dotnet dev-certs https
+          sudo -E dotnet dev-certs https -ep /usr/local/share/ca-certificates/aspnet/https.crt --format PEM
+          certutil -d sql:$HOME/.pki/nssdb -A -t "P,," -n localhost -i /usr/local/share/ca-certificates/aspnet/https.crt
+          certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n localhost -i /usr/local/share/ca-certificates/aspnet/https.crt
+      
+      - name: Build
+        run: dotnet build
 
-    - name: Test
-      run: dotnet test
+      - name: Test
+        run: dotnet test
   
