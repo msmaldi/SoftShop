@@ -35,7 +35,7 @@ namespace SoftShop.Test.Application
                 AppHost = appHost,
                 Port = appPort,
                 Browser = Coypu.Drivers.Browser.Chrome,
-                Timeout = TimeSpan.FromSeconds(30)
+                Timeout = TimeSpan.FromSeconds(60)
             };
         }
  
