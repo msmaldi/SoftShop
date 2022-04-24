@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-lastest
 
   steps:
+  - name: Checout Master
   - uses: actions/checkout@master
 
   - name: Apt Update
