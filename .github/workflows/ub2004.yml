@@ -21,12 +21,12 @@ jobs:
       - name: Setup Chromium for use DEB instead SNAP
         run: |
           sudo touch /etc/apt/sources.list.d/bionic-updates.list
-          sudo echo -e 'deb http://archive.ubuntu.com/ubuntu/ bionic-updates universe' > /etc/apt/sources.list.d/bionic-updates.list
+          echo -e 'deb http://archive.ubuntu.com/ubuntu/ bionic-updates universe' | sudo tee /etc/apt/sources.list.d/bionic-updates.list
           sudo touch /etc/apt/preferences.d/chromium-deb-bionic-updates
-          sudo echo -e 'Package: chromium-browser chromium-browser-l10n chromium-codecs-ffmpeg-extra chromium-codecs-ffmpeg' > /etc/apt/sources.list.d/bionic-updates.list
-          sudo echo -e 'Pin: release a=bionic-updates' > /etc/apt/sources.list.d/bionic-updates.list
-          sudo echo -e 'Pin-Priority: 900' > /etc/apt/sources.list.d/bionic-updates.list
-          sudo apt-get update
+          echo -e 'Package: chromium-browser chromium-browser-l10n chromium-codecs-ffmpeg-extra chromium-codecs-ffmpeg' | sudo tee -a /etc/apt/preferences.d/chromium-deb-bionic-updates
+          echo -e 'Pin: release a=bionic-updates' | sudo tee -a /etc/apt/preferences.d/chromium-deb-bionic-updates
+          echo -e 'Pin-Priority: 900' | sudo tee -a /etc/apt/preferences.d/chromium-deb-bionic-updates
+          apt-get update
               
       - name: Install Chromium Browser and Driver
         run: sudo apt-get install -y chromium-browser chromium-chromedriver
