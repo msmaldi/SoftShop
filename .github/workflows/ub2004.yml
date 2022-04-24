@@ -17,6 +17,16 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '6.0.x'
+
+      - name: Setup Chromium for use DEB instead SNAP
+        run: |
+          sudo touch /etc/apt/sources.list.d/bionic-updates.list
+          sudo echo -e 'deb http://archive.ubuntu.com/ubuntu/ bionic-updates universe' > /etc/apt/sources.list.d/bionic-updates.list
+          sudo touch /etc/apt/preferences.d/chromium-deb-bionic-updates
+          sudo echo -e 'Package: chromium-browser chromium-browser-l10n chromium-codecs-ffmpeg-extra chromium-codecs-ffmpeg' > /etc/apt/sources.list.d/bionic-updates.list
+          sudo echo -e 'Pin: release a=bionic-updates' > /etc/apt/sources.list.d/bionic-updates.list
+          sudo echo -e 'Pin-Priority: 900' > /etc/apt/sources.list.d/bionic-updates.list
+          sudo apt-get update
               
       - name: Install Chromium Browser and Driver
         run: sudo apt-get install -y chromium-browser chromium-chromedriver
@@ -25,15 +35,10 @@ jobs:
         run: |
           sudo apt-get install -y libnss3-tools
           mkdir -p $HOME/.pki/nssdb
-          mkdir -p $HOME/snap/chromium/current/.pki/nssdb
           dotnet dev-certs https
           sudo -E dotnet dev-certs https -ep /usr/local/share/ca-certificates/aspnet/https.crt --format PEM
-          sudo update-ca-certificates
-          certutil -d sql:$HOME/snap/chromium/current/.pki/nssdb -A -t "P,," -n localhost -i /usr/local/share/ca-certificates/aspnet/https.crt
-          certutil -d sql:$HOME/snap/chromium/current/.pki/nssdb -A -t "C,," -n localhost -i /usr/local/share/ca-certificates/aspnet/https.crt
           certutil -d sql:$HOME/.pki/nssdb -A -t "P,," -n localhost -i /usr/local/share/ca-certificates/aspnet/https.crt
           certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n localhost -i /usr/local/share/ca-certificates/aspnet/https.crt
-          sudo update-ca-certificates
       
       - name: Build
         run: dotnet build
