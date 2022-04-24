@@ -24,7 +24,7 @@ jobs:
       - name: Setup HTTPS certs for Chrome
         run: |
           sudo apt-get install -y libnss3-tools
-          mkdir -p $.pki/nssdb
+          mkdir -p $HOME/.pki/nssdb
           mkdir -p $HOME/snap/chromium/current/.pki/nssdb
           dotnet dev-certs https
           sudo -E dotnet dev-certs https -ep /usr/local/share/ca-certificates/aspnet/https.crt --format PEM
