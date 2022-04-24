@@ -1,0 +1,12 @@
+[Bb]in/
+[Oo]bj/
+
+coverage*.json
+coverage*.xml
+coverage*.info
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
